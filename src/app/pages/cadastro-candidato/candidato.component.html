@@ -1,0 +1,236 @@
+<div class="page-wrapper">
+  <nav aria-label="breadcrumb" class="breadcrumb">
+    <button mat-button style="opacity: 0.6" class="subPageBtn" disabled>
+      <span class="material-icons-outlined home"> home </span>
+    </button>
+    <span class="material-icons-outlined"> chevron_right </span>
+    <button mat-button color="primary" class="subPageBtn" routerLink="/candidatos">
+      Candidatos
+    </button>
+  </nav>
+
+  <h1 class="pageTitle">
+    Cadastro Candidato
+  </h1>
+  <section class="basePage">
+    <h3>Preencha abaixo os dados do candidato:</h3>
+    <form [formGroup]="formGroup">
+      <fieldset>
+        <legend>Dados Candidato:</legend>
+
+        <article class="form-row">
+          <mat-form-field appearance="fill">
+            <mat-label>Código Candidato</mat-label>
+            <input type="text" matInput formControlName="codCandidato" />
+          </mat-form-field>
+        </article>
+
+        <article class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Nome </mat-label>
+            <input type="text" matInput formControlName="name" minlength="3" maxlength="64" />
+            <mat-error *ngIf="formGroup.hasError('required', 'name')">
+              Campo obrigatório
+            </mat-error>
+            <mat-error *ngIf="
+              formGroup.hasError('minlength', 'name') ||
+              formGroup.hasError('maxlength', 'name')">
+              Por favor, informe o nome do candidato corretamente
+            </mat-error>
+          </mat-form-field>
+        </article>
+
+        <article class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Escolha uma data</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="birthDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </article>
+
+
+
+        <article class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Nome da Mãe </mat-label>
+            <input type="text" matInput formControlName="motherName" minlength="3" maxlength="64" />
+            <mat-error *ngIf="formGroup.hasError('required', 'motherName')">
+              Campo obrigatório
+            </mat-error>
+            <mat-error *ngIf="
+              formGroup.hasError('minlength', 'motherName') ||
+              formGroup.hasError('maxlength', 'motherName')">
+              Por favor, informe o nome da mãe corretamente
+            </mat-error>
+          </mat-form-field>
+        </article>
+
+        <article class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>CPF</mat-label>
+            <input
+                    type="text"
+                    matInput
+                    [attr.mask]="maskCPF"
+                    mask="000.000.000-00"
+                    formControlName="cpf"
+            />
+            <mat-error *ngIf="formGroup.hasError('required', 'cpf')">
+              Campo obrigatório.
+            </mat-error>
+            <mat-error *ngIf="formGroup.hasError('cpfNotValid', 'cpf')">
+            Campo cpf esta invalido.
+            </mat-error>
+          </mat-form-field>
+        </article>
+
+        <div style="display:flex; flex-wrap: wrap; gap: 10px">
+        <!-- Input tipo file -->
+          <div style="flex-grow: 1">
+        <article class="form-row">
+          <div class="custom-file-input">
+            <input type="file" id="facePhoto" formControlName="facePhoto" (change)="onFileSelected($event)"
+              accept=".png,.jpg,.jpeg,.gif" #imageInputFile />
+            <label for="facePhoto">
+              <mat-icon>attach_file</mat-icon> Foto do rosto
+            </label>
+          </div>
+        </article>
+
+        <article class="form-row" *ngIf="facePhoto">
+          <div style="display: flex;flex-direction: column;">
+            <div class="mt-5">
+              <h5>Vista Previa: </h5>
+              <div>
+                <img class="img-thumbnail" style="max-width: 200px" [src]="imagenMin" />
+              </div>
+            </div>
+            <div style=" display: flex; flex-direction: row;gap: 15px;">
+              <button mat-flat-button color="warn" [disabled]="!facePhoto" (click)="resetArquivo()">Excluir Imagem</button>
+            </div>
+          </div>
+        </article>
+          </div>
+          <div style="flex-grow: 1">
+          <article class="form-row">
+            <div class="custom-file-input">
+              <input type="file" id="idDocFront" formControlName="idDocFront" (change)="onFileSelected1($event)"
+                     accept=".png,.jpg,.jpeg,.gif" #imageInputFile />
+              <label for="idDocFront">
+                <mat-icon>attach_file</mat-icon> Frente do documento
+              </label>
+            </div>
+          </article>
+
+          <article class="form-row" *ngIf="idDocFront">
+            <div style="display: flex;flex-direction: column;">
+              <div class="mt-5">
+                <h5>Vista Previa: </h5>
+                <div>
+                  <img class="img-thumbnail" style="max-width: 200px" [src]="imagenMin1" />
+                </div>
+              </div>
+              <div style=" display: flex; flex-direction: row;gap: 15px;">
+                <button mat-flat-button color="warn" [disabled]="!idDocFront" (click)="resetArquivo()">Excluir Imagem</button>
+              </div>
+            </div>
+          </article>
+
+          </div>
+
+          <div style="flex-grow: 1">
+            <article class="form-row">
+              <div class="custom-file-input">
+                <input type="file" id="idDocBack" formControlName="idDocBack" (change)="onFileSelected2($event)"
+                       accept=".png,.jpg,.jpeg,.gif" #imageInputFile />
+                <label for="idDocBack">
+                  <mat-icon>attach_file</mat-icon> Verso do documento
+                </label>
+              </div>
+            </article>
+
+            <article class="form-row" *ngIf="idDocBack">
+              <div style="display: flex;flex-direction: column;">
+                <div class="mt-5">
+                  <h5>Vista Previa: </h5>
+                  <div>
+                    <img class="img-thumbnail" style="max-width: 200px" [src]="imagenMin2" />
+                  </div>
+                </div>
+                <div style=" display: flex; flex-direction: row;gap: 15px;">
+                  <button mat-flat-button color="warn" [disabled]="!idDocBack" (click)="resetArquivo()">Excluir Imagem</button>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div style="flex-grow: 1">
+            <article class="form-row">
+              <div class="custom-file-input">
+                <input type="file" id="adressDocFront" formControlName="adressDocFront" (change)="onFileSelected3($event)"
+                       accept=".png,.jpg,.jpeg,.gif" #imageInputFile />
+                <label for="adressDocFront">
+                  <mat-icon>attach_file</mat-icon> Frente Comprovante
+                </label>
+              </div>
+            </article>
+
+            <article class="form-row" *ngIf="adressDocFront">
+              <div style="display: flex;flex-direction: column;">
+                <div class="mt-5">
+                  <h5>Vista Previa: </h5>
+                  <div>
+                    <img class="img-thumbnail" style="max-width: 200px" [src]="imagenMin3" />
+                  </div>
+                </div>
+                <div style=" display: flex; flex-direction: row;gap: 15px;">
+                  <button mat-flat-button color="warn" [disabled]="!adressDocFront" (click)="resetArquivo()">Excluir Imagem</button>
+                </div>
+              </div>
+            </article>
+
+          </div>
+
+          <div style="flex-grow: 1">
+            <article class="form-row">
+              <div class="custom-file-input">
+                <input type="file" id="adressDocBack" formControlName="adressDocBack" (change)="onFileSelected4($event)"
+                       accept=".png,.jpg,.jpeg,.gif" #imageInputFile />
+                <label for="adressDocBack">
+                  <mat-icon>attach_file</mat-icon> Verso Comprovante
+                </label>
+              </div>
+            </article>
+
+            <article class="form-row" *ngIf="adressDocBack">
+              <div style="display: flex;flex-direction: column;">
+                <div class="mt-5">
+                  <h5>Vista Previa: </h5>
+                  <div>
+                    <img class="img-thumbnail" style="max-width: 200px" [src]="imagenMin4" />
+                  </div>
+                </div>
+                <div style=" display: flex; flex-direction: row;gap: 15px;">
+                  <button mat-flat-button color="warn" [disabled]="!adressDocBack" (click)="resetArquivo()">Excluir Imagem</button>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
+
+
+      </fieldset>
+
+      <article class="btn-row">
+        <button mat-flat-button color="primary" (click)="saveCandidato()">
+          Salvar
+        </button>
+        <button mat-stroked-button type="button" (click)="backNavigationHandler()">
+          Cancelar
+        </button>
+      </article>
+    </form>
+  </section>
+</div>
